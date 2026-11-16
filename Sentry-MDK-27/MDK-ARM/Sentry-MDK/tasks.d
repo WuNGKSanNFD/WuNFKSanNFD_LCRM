@@ -1,0 +1,16 @@
+sentry-mdk\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/tasks.c
+sentry-mdk\tasks.o: D:\Keil\ARM\ARMCC\Bin\..\include\stdlib.h
+sentry-mdk\tasks.o: D:\Keil\ARM\ARMCC\Bin\..\include\string.h
+sentry-mdk\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+sentry-mdk\tasks.o: D:\Keil\ARM\ARMCC\Bin\..\include\stddef.h
+sentry-mdk\tasks.o: D:\Keil\ARM\ARMCC\Bin\..\include\stdint.h
+sentry-mdk\tasks.o: ../Core/Inc/FreeRTOSConfig.h
+sentry-mdk\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+sentry-mdk\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+sentry-mdk\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+sentry-mdk\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+sentry-mdk\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+sentry-mdk\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+sentry-mdk\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+sentry-mdk\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
+sentry-mdk\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/stack_macros.h

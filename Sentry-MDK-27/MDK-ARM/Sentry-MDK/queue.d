@@ -1,0 +1,15 @@
+sentry-mdk\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/queue.c
+sentry-mdk\queue.o: D:\Keil\ARM\ARMCC\Bin\..\include\stdlib.h
+sentry-mdk\queue.o: D:\Keil\ARM\ARMCC\Bin\..\include\string.h
+sentry-mdk\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+sentry-mdk\queue.o: D:\Keil\ARM\ARMCC\Bin\..\include\stddef.h
+sentry-mdk\queue.o: D:\Keil\ARM\ARMCC\Bin\..\include\stdint.h
+sentry-mdk\queue.o: ../Core/Inc/FreeRTOSConfig.h
+sentry-mdk\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+sentry-mdk\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+sentry-mdk\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+sentry-mdk\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+sentry-mdk\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+sentry-mdk\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+sentry-mdk\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+sentry-mdk\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h

@@ -1,0 +1,15 @@
+sentry-mdk\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/timers.c
+sentry-mdk\timers.o: D:\Keil\ARM\ARMCC\Bin\..\include\stdlib.h
+sentry-mdk\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+sentry-mdk\timers.o: D:\Keil\ARM\ARMCC\Bin\..\include\stddef.h
+sentry-mdk\timers.o: D:\Keil\ARM\ARMCC\Bin\..\include\stdint.h
+sentry-mdk\timers.o: ../Core/Inc/FreeRTOSConfig.h
+sentry-mdk\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+sentry-mdk\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+sentry-mdk\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+sentry-mdk\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+sentry-mdk\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+sentry-mdk\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+sentry-mdk\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+sentry-mdk\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
+sentry-mdk\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
