@@ -429,6 +429,8 @@ DJI_motor_status_e DJI_Motor_work(void)
     }
     else
       return DJI_motor_error;  
+    
+    
   }
   
   if(DJI_motor_sendData() != DJI_motor_ok)

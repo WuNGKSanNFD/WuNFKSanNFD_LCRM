@@ -24,11 +24,11 @@ void gimbal_init(void)
   gimbal->yaw_motor = (DM_motor_config_s)
   {
     .motor_type   = DM_J4310,
-    .ID           = 0x05,
-    .MST_ID       = 0x01,
+    .ID           = 0x01,
+    .MST_ID       = 0x11,
     .control_mode = DM_MIT,
     .pidMode      = DM_motor_pidPosition, //闭环模式：位置环（目标/反馈均为 rad）
-    .hcan         = &hcan1,
+    .hcan         = &hcan2,
     .PMAX         = 3.1415926f,
     .VMAX         = 10.0f,
     .TMAX         = 28.0f,
@@ -59,33 +59,33 @@ void gimbal_init(void)
   gimbal->big_pitch_motor = (DM_motor_config_s)
   {
     .motor_type   = DM_J4310,
-    .ID           = 0x05,
-    .MST_ID       = 0x01,
+    .ID           = 0x02,
+    .MST_ID       = 0x12,
     .control_mode = DM_MIT,
     .pidMode      = DM_motor_pidPosition, //闭环模式：位置环（目标/反馈均为 rad）
-    .hcan         = &hcan1,
+    .hcan         = &hcan2,
     .PMAX         = 3.1415926f,
-    .VMAX         = 10.0f,
-    .TMAX         = 28.0f,
+    .VMAX         = 30.0f,
+    .TMAX         = 10.0f,
     
     //速度环：小陀螺用
     .pid_speed = {
       .kp     = 1.0f,
-      .ki     = 0.0f,
+      .ki     = 0.05f,
       .kd     = 0,
       .max_i  = 4.0f,      //积分限幅
-      .maxout = 28.0f,     //输出限幅
+      .maxout = 10.0f,     //输出限幅
       .dead   = 0,         //死区
       .pid_mode = pid_mode_normal,
     },
     
     //位置环：底盘反扭/跟随用
     .pid_position = {
-      .kp     = 1.0f,
+      .kp     = 6.0f,
       .ki     = 0,
       .kd     = 0,
       .max_i  = 2.0f,      //积分限幅
-      .maxout = 100.0f,    //输出限幅
+      .maxout = 3.0f,    //输出限幅
       .dead   = 0,         //死区
       .pid_mode = pid_mode_i_separation,
     },
@@ -94,33 +94,33 @@ void gimbal_init(void)
   gimbal->small_pitch_motor = (DM_motor_config_s)
   {
     .motor_type   = DM_J4310,
-    .ID           = 0x05,
-    .MST_ID       = 0x01,
+    .ID           = 0x03,
+    .MST_ID       = 0x013,
     .control_mode = DM_MIT,
     .pidMode      = DM_motor_pidPosition, //闭环模式：位置环（目标/反馈均为 rad）
-    .hcan         = &hcan1,
+    .hcan         = &hcan2,
     .PMAX         = 3.1415926f,
-    .VMAX         = 10.0f,
-    .TMAX         = 28.0f,
+    .VMAX         = 30.0f,
+    .TMAX         = 10.0f,
     
     //速度环：小陀螺用
     .pid_speed = {
       .kp     = 1.0f,
-      .ki     = 0.0f,
+      .ki     = 0.01f,
       .kd     = 0,
-      .max_i  = 4.0f,      //积分限幅
-      .maxout = 28.0f,     //输出限幅
+      .max_i  = 1.0f,      //积分限幅
+      .maxout = 10.0f,     //输出限幅
       .dead   = 0,         //死区
       .pid_mode = pid_mode_normal,
     },
     
     //位置环：底盘反扭/跟随用
     .pid_position = {
-      .kp     = 1.0f,
+      .kp     = 22.0f,
       .ki     = 0,
       .kd     = 0,
       .max_i  = 2.0f,      //积分限幅
-      .maxout = 100.0f,    //输出限幅
+      .maxout = 9.0f,    //输出限幅
       .dead   = 0,         //死区
       .pid_mode = pid_mode_i_separation,
     },
@@ -136,7 +136,7 @@ void gimbal_init(void)
 /** @brief 使能三轴电机（未检查 DM_motor_enable 返回值） */
 void gimbal_enable(void)
 {
-  DM_motor_enable(gimbal->yaw_motor.ID);
+  DM_motor_disable(gimbal->yaw_motor.ID);
   DM_motor_enable(gimbal->big_pitch_motor.ID);
   DM_motor_enable(gimbal->small_pitch_motor.ID);
   gimbal->workStatus = 1;
@@ -182,18 +182,18 @@ gimbal_status_e gimbal_work(void)
     if(gimbal->workStatus == 1)
     {
       //small pitch：用 IMU 姿态闭环，目标 0 rad
-      DM_motor_setFeedbcak(gimbal->small_pitch_motor.ID, IMU_data.filter_pitch * GIMBAL_DEG_TO_RAD, smallPitch_data.speed);
+      DM_motor_setFeedbcak(gimbal->small_pitch_motor.ID, IMU_data.filter_roll * GIMBAL_DEG_TO_RAD, smallPitch_data.speed);
       DM_Motor_setPidConfig(gimbal->small_pitch_motor.ID, 0, 0);
       
       
-      if(fabsf(yaw_data.position) >= GIMBAL_DISABLE_RANGE)
+      if(fabsf(yaw_data.position) >= GIMBAL_DISABLE_RANGE * GIMBAL_DEG_TO_RAD)
       {
         //yaw：反馈切回编码器（rad），目标 0
         DM_motor_setFeedbcak(gimbal->yaw_motor.ID, yaw_data.position, yaw_data.speed);
         DM_Motor_setPidConfig(gimbal->yaw_motor.ID, 0, 0);
       }
       //big pitch：目标 0 rad
-      else if(fabsf(bigPitch_data.position) >= GIMBAL_DISABLE_RANGE)
+      else if(fabsf(bigPitch_data.position) >= GIMBAL_DISABLE_RANGE * GIMBAL_DEG_TO_RAD)
       {
         DM_Motor_setPidConfig(gimbal->big_pitch_motor.ID, 0, 0);
       }
@@ -208,17 +208,17 @@ gimbal_status_e gimbal_work(void)
   else if(cmd.workFlag == 1 && last_workStatus == 0)
   {
     gimbal_enable();
-    DM_Motor_setPidConfig(gimbal->big_pitch_motor.ID, 3.1415926f / 2.0f, 0);
+    DM_Motor_setPidConfig(gimbal->big_pitch_motor.ID, 86.0f * GIMBAL_DEG_TO_RAD, 0);
   }
   
   //传参（cmd 为 deg，统一换算成 rad）
-  gimbal->data.bigPitch_angle = 3.1415926f / 2.0f;
-  gimbal->data.smallPitch_angle = cmd.pitch * GIMBAL_DEG_TO_RAD;
+  gimbal->data.bigPitch_angle = 86.0f * GIMBAL_DEG_TO_RAD;
+  gimbal->data.smallPitch_angle = -cmd.pitch * GIMBAL_DEG_TO_RAD;
   gimbal->data.yaw_angle = cmd.small_yaw * GIMBAL_DEG_TO_RAD;
   
   //设置反馈：位置用 IMU 姿态角（deg→rad），速度仍用编码器 rad/s
   DM_motor_setFeedbcak(gimbal->yaw_motor.ID, IMU_data.filter_yaw * GIMBAL_DEG_TO_RAD, yaw_data.speed);
-  DM_motor_setFeedbcak(gimbal->small_pitch_motor.ID, IMU_data.filter_pitch  * GIMBAL_DEG_TO_RAD, smallPitch_data.speed);
+  DM_motor_setFeedbcak(gimbal->small_pitch_motor.ID, IMU_data.filter_roll  * GIMBAL_DEG_TO_RAD, smallPitch_data.speed);
   
   //更新三轴目标（rad）
   DM_Motor_setPidConfig(gimbal->yaw_motor.ID, gimbal->data.yaw_angle, 0);

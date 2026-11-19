@@ -75,7 +75,7 @@ static cmd_mode_e cmd_remote_to_mode(remote_data_s *remote)
     //上
     case 1:
       //小陀螺
-      cmd_mode = (cmd_mode_e)((cmd_mode & 0xFFF0) | CMD_MODE_TOP);
+      cmd_mode = (cmd_mode_e)((cmd_mode & 0xFF0F) | CMD_MODE_TOP);
       break;
     //下
     case 2:
@@ -90,6 +90,8 @@ static cmd_mode_e cmd_remote_to_mode(remote_data_s *remote)
 #else
       cmd_mode = (cmd_mode_e)((cmd_mode & 0xFFF0) | CMD_MODE_CHASSIS_NO_FOLLOW);
 #endif
+      cmd_mode = (cmd_mode_e)((cmd_mode & 0xFF0F) | CMD_MODE_GIMBAL_ON);
+    
       break;
   }
   
@@ -293,7 +295,7 @@ static void cmd_remoteControl(cmd_mode_e *cmd_mode, remote_data_s *remote)
   chassisCMD.top_speed      = 0;
   chassisCMD.chassis_rotate = 0;
   
-  gimbalCMD.workFlag = 1;
+  gimbalCMD.workFlag = 0;
   gimbalCMD.small_yaw = cmd->gimbalCMD.small_yaw - cmd->gimbal_rotate_speed * remote_ch.ch0 / (660.0f - cmd->remote_dead); 
   gimbalCMD.pitch = cmd->gimbalCMD.pitch + cmd->pitch_speed * remote_ch.ch1 / (660.0f - cmd->remote_dead);
    
@@ -310,6 +312,7 @@ static void cmd_remoteControl(cmd_mode_e *cmd_mode, remote_data_s *remote)
   else if((*cmd_mode & 0x00F0) == CMD_MODE_GIMBAL_ON)
   {
     //todo
+    gimbalCMD.workFlag = 1;
   }
   else
   {
@@ -483,8 +486,8 @@ void cmd_init(void)
   cmd->pitch_init           = 0;
   cmd->yawAngle.max         = 120 + 90;
   cmd->yawAngle.min         = 120 - 90;
-  cmd->pitchAngle.max       = 53 + 20;
-  cmd->pitchAngle.min       = 53 - 20;
+  cmd->pitchAngle.max       = 60;
+  cmd->pitchAngle.min       = -60;
   
   cmd->friction_range       = 100;
   cmd->fire_range           = 600;
@@ -552,11 +555,11 @@ cmd_mode_e cmd_mode;
 void cmd_work(void)
 {
   //IMU上电校准
-//  if(IMU_isCalibrated() == 0)
-//  {
-//    cmd_all_disable();
-//    return;
-//  }
+  if(IMU_isCalibrated() == 0)
+  {
+    cmd_all_disable();
+    return;
+  }
   
   //校准完成：读yaw电机编码器，把“编码器角-机械中位角”作为修正量交给IMU； 
   static uint8_t calib_applied = 0;  

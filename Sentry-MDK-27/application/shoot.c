@@ -137,23 +137,26 @@ shoot_status_e shoot_work(void)
     shoot_dialEnable();
   }
   
-  
+  //使能发射机构
   if(cmd.workFlag == 1)
   {
     DJI_motor_setTarget(shoot->fric_left_motor_ID, 0, 0);
     DJI_motor_setTarget(shoot->fric_right_motor_ID, 0, 0);
     DJI_motor_setTarget(shoot->dial_motor_ID, 0, 0);
   }
+  //开启摩擦轮
   else if(cmd.workFlag == 2)
   {
     DJI_motor_setTarget(shoot->fric_left_motor_ID, 0, -cmd.fric_speed);
     DJI_motor_setTarget(shoot->fric_right_motor_ID, 0,  cmd.fric_speed);
     DJI_motor_setTarget(shoot->dial_motor_ID, 0, 0);
   }
+  //连发
   else if(cmd.workFlag == 3)
   {
     DJI_motor_setTarget(shoot->dial_motor_ID, 0, cmd.dial_speed * SHOOT_DIAL_HZ_TO_RPM);
   }
+  //单发
   else if(cmd.workFlag == 4)
   {
     //todo

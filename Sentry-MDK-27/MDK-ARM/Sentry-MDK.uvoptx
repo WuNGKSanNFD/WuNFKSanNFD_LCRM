@@ -97,7 +97,7 @@
         <tRbox>1</tRbox>
         <tRtrace>1</tRtrace>
         <sRSysVw>1</sRSysVw>
-        <tRSysVw>1</tRSysVw>
+        <tRSysVw>0</tRSysVw>
         <sRunDeb>0</sRunDeb>
         <sLrtime>0</sLrtime>
         <bEvRecOn>1</bEvRecOn>
@@ -223,7 +223,7 @@
         <Ww>
           <count>13</count>
           <WinNumber>1</WinNumber>
-          <ItemText>IMU_instance</ItemText>
+          <ItemText>IMU_instance,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>14</count>

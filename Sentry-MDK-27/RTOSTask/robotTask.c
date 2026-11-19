@@ -72,8 +72,8 @@ void robot_init(void)
     
     //温控PID参数
     .pid_heat = {
-      .kp = 0.20f,//1600/5000
-      .ki = 0.0032f,//0.2×800Hz×100ms/5000
+      .kp = 0.10f,//1600/5000
+      .ki = 0.000f,//0.2×800Hz×100ms/5000
       .kd = 0,//示例 Kd=0
       .max_i = 0.88f,//4400/5000
       .maxout = 0.9f,//4500/5000
@@ -190,28 +190,33 @@ void shootTask(void *argument)
 void serialTask(void *argument)
 {
   
-  DJI_motor_rxData_s chassis_1;
-  DJI_motor_rxData_s chassis_2;
-  DJI_motor_rxData_s chassis_3;
-  DJI_motor_rxData_s chassis_4;
+//  DJI_motor_rxData_s chassis_1;
+//  DJI_motor_rxData_s chassis_2;
+//  DJI_motor_rxData_s chassis_3;
+//  DJI_motor_rxData_s chassis_4;
   
+    DM_motor_rxData_s big_pitch;
+    DM_motor_rxData_s small_pitch;
   for(;;)
   { 
     //底盘
-    DJI_motor_motorID_s chassis_1_ID   = {DJI_M3508,1,&hcan1};
-    DJI_motor_motorID_s chassis_2_ID   = {DJI_M3508,2,&hcan1};
-    DJI_motor_motorID_s chassis_3_ID   = {DJI_M3508,3,&hcan1};
-    DJI_motor_motorID_s chassis_4_ID   = {DJI_M3508,4,&hcan1};
-    DJI_motor_getData(chassis_1_ID,&chassis_1);
-    DJI_motor_getData(chassis_2_ID,&chassis_2);
-    DJI_motor_getData(chassis_3_ID,&chassis_3);
-    DJI_motor_getData(chassis_4_ID,&chassis_4);
-    chassis_data_s chassis = chassis_getData();
-    
-    Serial_Printf(&huart6,"%.6f,%.6f\n",chassis_2.speed, chassis.chassis_speed[1]);
+//    DJI_motor_motorID_s chassis_1_ID   = {DJI_M3508,1,&hcan1};
+//    DJI_motor_motorID_s chassis_2_ID   = {DJI_M3508,2,&hcan1};
+//    DJI_motor_motorID_s chassis_3_ID   = {DJI_M3508,3,&hcan1};
+//    DJI_motor_motorID_s chassis_4_ID   = {DJI_M3508,4,&hcan1};
+//    DJI_motor_getData(chassis_1_ID,&chassis_1);
+//    DJI_motor_getData(chassis_2_ID,&chassis_2);
+//    DJI_motor_getData(chassis_3_ID,&chassis_3);
+//    DJI_motor_getData(chassis_4_ID,&chassis_4);
+//    chassis_data_s chassis = chassis_getData();
+//    
+//    Serial_Printf(&huart6,"%.6f,%.6f\n",chassis_2.speed, chassis.chassis_speed[1]);
 
-
-
+    //云台
+    DM_motor_getData(0x2, &big_pitch);
+    DM_motor_getData(0x3, &small_pitch);
+    IMU_data_s IMU = IMU_getData();
+    Serial_Printf(&huart6,"%.6f, %.6f\n",small_pitch.speed, big_pitch.position);
    
     
     osDelay(5);
